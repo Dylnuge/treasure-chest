@@ -8,6 +8,25 @@ from treasureapp.models import AccountGroup
 from treasureapp.forms import AccountGroupForm
 from treasureapp.authenticators import authenticate_group
 
+## USER METHODS
+
+def user_login(request, *args, **kwargs):
+	pass
+
+def user_logout(request, *args, **kwargs):
+	pass
+
+def user_register(request, *args, **kwargs):
+	pass
+
+def user_view(request, user_id, *args, **kwargs):
+	pass
+
+def user_update(request, user_id, *args, **kwargs):
+	pass
+
+## GROUP METHODS
+
 @login_required
 def group_manager(request, *args, **kwargs):
 	"""
