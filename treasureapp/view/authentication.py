@@ -10,12 +10,6 @@ from treasureapp.authenticators import authenticate_group
 
 ## USER METHODS
 
-def user_login(request, *args, **kwargs):
-	pass
-
-def user_logout(request, *args, **kwargs):
-	pass
-
 def user_register(request, *args, **kwargs):
 	pass
 

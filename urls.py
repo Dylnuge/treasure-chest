@@ -24,9 +24,6 @@ urlpatterns = patterns('treasureapp.views',
     url(r'^group/new$', 'group_create', {}, 'group_create'),
     url(r'^group/$', 'group_manager', {}, 'group_manager'),
 
-    # User URLs
-    url(r'^login$', 'user_login', {}, 'user_login'),
-    url(r'^logout$', 'user_logout', {}, 'user_logout'),
     url(r'^register$', 'user_register', {}, 'user_register'),
 
     # Site standard content URLs
@@ -38,6 +35,10 @@ urlpatterns += patterns('',
     # Administration controls
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
+
+    # User URLs
+    url(r'^login$', 'django.contrib.auth.views.login', {}, 'user_login'),
+    url(r'^logout$', 'django.contrib.auth.views.logout', {'next_page':'/'}, 'user_logout'),
 )
 
 if settings.DEBUG == True:
