@@ -4,8 +4,8 @@ from django.core.exceptions import PermissionDenied
 from django.core.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 
-from treasureapp.models import Account, Transaction
-from treasureapp.forms import TransactionForm
+from treasureapp.models import Account, Transaction, Image
+from treasureapp.forms import TransactionForm, ImageUploadForm
 
 from treasureapp.authenticators import authenticate_transaction
 
@@ -84,6 +84,7 @@ def transaction_update(request, transaction_id, *args, **kargs):
 		# Try to validate and update
 		transaction_form = TransactionForm(request.POST, instance=transaction)
 		if transaction_form.is_valid():
+			transaction_form.save()
 			return HttpResponseRedirect('/transaction/' + str(transaction_id))
 	else:
 		# Populate the form with the current transaction data
@@ -98,3 +99,39 @@ def transaction_update(request, transaction_id, *args, **kargs):
 		mode='update',
 		**kargs))
 	return render_to_response("transactions/form.html", context)
+
+@login_required
+def transaction_upload_file(request, transaction_id, *args, **kargs):
+	"""
+	Upload a file (currently, only images) to a transaction.
+
+	On GET, it will return a form to upload an image.
+	On POST, it will attach the image to the transaction.
+	"""
+
+	# As always, get transaction
+	transaction = get_object_or_404(Transaction, pk=transaction_id)
+
+	# Check that the user has permissions on this transaction.
+	# For now, assume that a lack of account permissions means a lack of
+	# any upload rights.
+	if not authenticate_transaction(request.user, transaction):
+		raise PermissionDenied()
+
+	if request.method == 'POST':
+		# Declare tautologies (just kidding, establish an image with this
+		# as its parent transaction)
+		image = Image(transaction=transaction)
+		upload_form = ImageUploadForm(request.POST, request.FILES,
+				instance=image)
+		if upload_form.is_valid():
+			upload_form.save()
+			return HttpResponseRedirect('/transaction/' + str(transaction_id))
+	else:
+		upload_form = ImageUploadForm()
+
+	# Pass back the upload form after updating CSRF token
+	kargs.update(csrf(request))
+	context = RequestContext(request, dict(transaction=transaction,
+		form=upload_form, **kargs))
+	return render_to_response("transactions/upload.html", context)

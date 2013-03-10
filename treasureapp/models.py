@@ -2,6 +2,8 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 
+import os
+
 class AccountGroup(models.Model):
 	name = models.CharField(max_length=30)
 	members = models.ManyToManyField(User)
@@ -118,3 +120,19 @@ class Transaction(models.Model):
 				+ str(self.amount)
 
 		return strout
+
+class Image(models.Model):
+	"""
+	An uploaded image attached to a transaction
+
+	transaction - The transaction the upload is attached to
+	uploaded_on - Upload timestamp
+	upload_file - The image uploaded
+	"""
+
+	def path(self, name):
+		return 'uploads/%d/%s' % (self.transaction.pk, name)
+
+	transaction = models.ForeignKey(Transaction)
+	uploaded_on = models.DateTimeField(auto_now_add=True, editable=False)
+	upload_file = models.ImageField(upload_to=path)

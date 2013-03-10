@@ -1,6 +1,6 @@
 from django.forms import Form, ModelForm, DecimalField
 
-from treasureapp.models import Account, Transaction, AccountGroup
+from treasureapp.models import Account, Transaction, AccountGroup, Image
 
 class AccountForm(ModelForm):
 	"""
@@ -31,3 +31,12 @@ class AccountGroupForm(ModelForm):
 
 	class Meta:
 		model = AccountGroup
+
+class ImageUploadForm(ModelForm):
+	"""
+	A form for uploading images (and only images, right now).
+	"""
+
+	class Meta:
+		model = Image
+		fields = ('upload_file',)

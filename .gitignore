@@ -10,3 +10,6 @@ settings.py
 
 # Virtual environment folder
 venv
+
+# Uploads folder
+media/

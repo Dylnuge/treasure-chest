@@ -28,11 +28,12 @@
 <strong>Transaction Last Updated:</strong> {{ transaction.updated_on }}
 </p>
 
-</p>
-
 <p>
 <a href="{% url transaction_update transaction.pk %}" class="btn btn-primary btn-large">
     Update this transaction
+</a>
+<a href="{% url transaction_upload_file transaction.pk %}" class="btn btn-primary btn-large">
+    Attach an image
 </a>
 </p>
 
