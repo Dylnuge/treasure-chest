@@ -19,7 +19,7 @@
 
 <!-- Transaction list for this account -->
 {% if transactions %}
-<table class="table table-bordered">
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>From Account</th>
@@ -32,7 +32,7 @@
 
     <tbody>
         {% for transaction in transactions %}
-        <tr {% if transaction.to_acct == account and transaction.from_acct != account %} style = "background-color:#33FF66" {% elif transaction.from_acct == account %} style = "background-color:#FF6666" {% endif %}>
+        <tr>
             <td>{{ transaction.from_acct }}</td>
             <td>{{ transaction.to_acct }}</td>
             <td>{{ transaction.amount }}</td>
@@ -43,7 +43,6 @@
                 </a>
             </td>
         </tr>
-	<tr></tr>
         {% endfor %}
     </tbody>
 
